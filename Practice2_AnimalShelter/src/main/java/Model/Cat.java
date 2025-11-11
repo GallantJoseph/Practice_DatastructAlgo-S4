@@ -5,7 +5,7 @@ public class Cat extends Animal {
         super();
     }
 
-    public Cat (String name) {
-        super(name);
+    public Cat(String name) {
+        super(name, "Cat");
     }
 }
