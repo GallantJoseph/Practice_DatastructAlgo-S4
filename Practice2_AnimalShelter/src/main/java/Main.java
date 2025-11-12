@@ -44,7 +44,13 @@ public class Main {
             switch (option) {
                 case ADOPT_ANIMAL_OPTION -> {
                     animal = animalShelterService.dequeueAny();
-                    System.out.println("You have adopted a " + animal.getType() + " named '" + animal.getName() + "'.");
+                    
+                    if (animal != null) {
+                        System.out.println("You have adopted a " + animal.getType() + " named '" + animal.getName() + "'.");
+                    } else {
+                        System.out.println("There are no animals left to adopt.");
+                    }
+
                 }
                 case ADOPT_CAT_OPTION -> {
                     cat = animalShelterService.dequeueCat();
