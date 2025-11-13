@@ -24,8 +24,6 @@ public class Main {
 
         AnimalShelterService animalShelterService = new AnimalShelterService();
 
-        animalShelterService.enqueueAnimal(new Cat("Poe"));
-
         do {
             System.out.println("\nWelcome to the Animal Shelter Adoption Program");
             System.out.println("----------------------------------------------");
@@ -44,7 +42,7 @@ public class Main {
             switch (option) {
                 case ADOPT_ANIMAL_OPTION -> {
                     animal = animalShelterService.dequeueAny();
-                    
+
                     if (animal != null) {
                         System.out.println("You have adopted a " + animal.getType() + " named '" + animal.getName() + "'.");
                     } else {
