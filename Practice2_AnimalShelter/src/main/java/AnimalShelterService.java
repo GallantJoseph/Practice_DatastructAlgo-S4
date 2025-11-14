@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class AnimalShelterService {
-    private final Queue<Cat> catQueue = new LinkedList<>();
-    private final Queue<Dog> dogQueue = new LinkedList<>();
+    private final Queue<Animal> animalQueue = new LinkedList<>();
 
     public AnimalShelterService() {
 
@@ -19,11 +18,11 @@ public class AnimalShelterService {
                 System.out.println("No animal to add to the queue.");
             }
             case Cat cat -> {
-                catQueue.add(cat);
+                animalQueue.add(cat);
                 System.out.println("Cat successfully added to the queue!");
             }
             case Dog dog -> {
-                dogQueue.add(dog);
+                animalQueue.add(dog);
                 System.out.println("Dog successfully added to the queue!");
             }
             default -> System.out.println("Invalid animal type.");
@@ -31,36 +30,42 @@ public class AnimalShelterService {
     }
 
     public Animal dequeueAny() {
-        if (catQueue.isEmpty()) {
-            return dogQueue.poll();
-        }
-
-        if (dogQueue.isEmpty()) {
-            return catQueue.poll();
-        }
-
-        if (Math.random() < 0.5) {
-            return dequeueCat();
-        } else {
-            return dequeueDog();
-        }
+        if (animalQueue.isEmpty()) {
+            System.out.println("No animals available.");
+            return null;
+        } else
+            return animalQueue.poll();
     }
 
     public Dog dequeueDog() {
-        if (dogQueue.isEmpty()) {
-            System.out.println("No dogs available");
-            return null;
+        for (Animal animal: animalQueue) {
+            if (animal instanceof Dog) {
+                animalQueue.remove(animal);
+                return (Dog) animal;
+            }
         }
 
-        return dogQueue.poll();
+        System.out.println("No dogs available");
+        return null;
     }
 
     public Cat dequeueCat() {
-        if (catQueue.isEmpty()) {
-            System.out.println("No cats available");
-            return null;
+        for (Animal animal: animalQueue) {
+            if (animal instanceof Cat) {
+                animalQueue.remove(animal);
+                return (Cat) animal;
+            }
         }
 
-        return catQueue.poll();
+        System.out.println("No cats available");
+        return null;
+    }
+
+    public void showAllAnimals() {
+        if (animalQueue.isEmpty())
+            System.out.println("* No animals available for adoption *");
+        for (Animal animal: animalQueue) {
+            System.out.printf("Type: %s\nName: %s\n\n", animal.getType(), animal.getName());
+        }
     }
 }

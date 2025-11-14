@@ -14,7 +14,8 @@ public class Main {
         final int ADOPT_DOG_OPTION = 3;
         final int SHELTER_CAT_OPTION = 4;
         final int SHELTER_DOG_OPTION = 5;
-        final int QUIT_OPTION = 6;
+        final int SHOW_ANIMALS_OPTION = 6;
+        final int QUIT_OPTION = 7;
 
         Animal animal;
         Cat cat;
@@ -32,12 +33,24 @@ public class Main {
             System.out.println("3. Adopt a dog");
             System.out.println("4. Shelter a cat");
             System.out.println("5. Shelter a dog");
-            System.out.println("6. Quit");
+            System.out.println("6. Show animals available for adoption");
+            System.out.println("7. Quit");
             System.out.println("----------------------------------------------");
 
-            System.out.println("Make a selection: ");
-            option = scanner.nextInt();
-            scanner.nextLine();
+            do {
+                System.out.print("\nMake a selection: ");
+
+                if (scanner.hasNextInt()) {
+                    option = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                } else {
+                    scanner.nextLine();
+                    System.out.println("Invalid option. Please enter a number.");
+                }
+
+            } while (true);
+
 
             switch (option) {
                 case ADOPT_ANIMAL_OPTION -> {
@@ -45,10 +58,7 @@ public class Main {
 
                     if (animal != null) {
                         System.out.println("You have adopted a " + animal.getType() + " named '" + animal.getName() + "'.");
-                    } else {
-                        System.out.println("There are no animals left to adopt.");
                     }
-
                 }
                 case ADOPT_CAT_OPTION -> {
                     cat = animalShelterService.dequeueCat();
@@ -76,6 +86,11 @@ public class Main {
 
                     animalShelterService.enqueueAnimal(new Dog(animalName));
                 }
+                case SHOW_ANIMALS_OPTION -> {
+                    System.out.println("\nAnimals available for adoption");
+                    System.out.println("------------------------------\n");
+                    animalShelterService.showAllAnimals();
+                }
                 case QUIT_OPTION -> {
                     System.out.println("\nThank you for using the Animal Shelter Service program!");
                 }
@@ -85,5 +100,6 @@ public class Main {
             }
         } while (option != QUIT_OPTION);
 
+        scanner.close();
     }
 }
