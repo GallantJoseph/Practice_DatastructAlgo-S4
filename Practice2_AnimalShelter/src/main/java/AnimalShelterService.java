@@ -15,23 +15,23 @@ public class AnimalShelterService {
     public void enqueueAnimal(Animal animal) {
         switch (animal) {
             case null -> {
-                System.out.println("No animal to add to the queue.");
+                System.out.println("\nNo animal to add.");
             }
             case Cat cat -> {
                 animalQueue.add(cat);
-                System.out.println("Cat successfully added to the queue!");
+                System.out.println("\nCat successfully added!");
             }
             case Dog dog -> {
                 animalQueue.add(dog);
-                System.out.println("Dog successfully added to the queue!");
+                System.out.println("\nDog successfully added!");
             }
-            default -> System.out.println("Invalid animal type.");
+            default -> System.out.println("\nInvalid animal type.");
         }
     }
 
     public Animal dequeueAny() {
         if (animalQueue.isEmpty()) {
-            System.out.println("No animals available.");
+            System.out.println("\nNo animals available.");
             return null;
         } else
             return animalQueue.poll();
@@ -45,7 +45,7 @@ public class AnimalShelterService {
             }
         }
 
-        System.out.println("No dogs available");
+        System.out.println("\nNo dogs available.");
         return null;
     }
 
@@ -57,8 +57,14 @@ public class AnimalShelterService {
             }
         }
 
-        System.out.println("No cats available");
+        System.out.println("\nNo cats available.");
         return null;
+    }
+
+    public static void adoptAnimal(Animal animal) {
+        if (animal != null) {
+            System.out.println("\nYou have adopted a " + animal.getType() + " named '" + animal.getName() + "'.");
+        }
     }
 
     public void showAllAnimals() {
