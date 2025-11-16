@@ -2,11 +2,14 @@ import Model.Animal;
 import Model.Cat;
 import Model.Dog;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class AnimalShelterService {
-    private final Queue<Animal> animalQueue = new LinkedList<>();
+    private long timestampCounter = 0;
+    private final Queue<Cat> catQueue = new LinkedList<>();
+    private final Queue<Dog> dogQueue = new LinkedList<>();
 
     public AnimalShelterService() {
 
@@ -18,11 +21,15 @@ public class AnimalShelterService {
                 System.out.println("\nNo animal to add.");
             }
             case Cat cat -> {
-                animalQueue.add(cat);
+                cat.setTimestamp(timestampCounter);
+                catQueue.add(cat);
+                timestampCounter++;
                 System.out.println("\nCat successfully added!");
             }
             case Dog dog -> {
-                animalQueue.add(dog);
+                dog.setTimestamp(timestampCounter);
+                dogQueue.add(dog);
+                timestampCounter++;
                 System.out.println("\nDog successfully added!");
             }
             default -> System.out.println("\nInvalid animal type.");
@@ -30,35 +37,38 @@ public class AnimalShelterService {
     }
 
     public Animal dequeueAny() {
-        if (animalQueue.isEmpty()) {
+        if (this.isEmpty()) {
             System.out.println("\nNo animals available.");
             return null;
-        } else
-            return animalQueue.poll();
+        }
+
+        if (catQueue.isEmpty())
+            return dequeueDog();
+        if (dogQueue.isEmpty())
+            return dequeueCat();
+
+        // Compare timestamps to get oldest overall
+        return (catQueue.peek().getTimestamp() < dogQueue.peek().getTimestamp())
+                ? dequeueCat()
+                : dequeueDog();
     }
 
     public Dog dequeueDog() {
-        for (Animal animal: animalQueue) {
-            if (animal instanceof Dog) {
-                animalQueue.remove(animal);
-                return (Dog) animal;
-            }
+        if (dogQueue.isEmpty()) {
+            System.out.println("\nNo dogs available.");
+            return null;
         }
 
-        System.out.println("\nNo dogs available.");
-        return null;
+        return dogQueue.poll();
     }
 
     public Cat dequeueCat() {
-        for (Animal animal: animalQueue) {
-            if (animal instanceof Cat) {
-                animalQueue.remove(animal);
-                return (Cat) animal;
-            }
+        if (catQueue.isEmpty()) {
+            System.out.println("\nNo cats available.");
+            return null;
         }
 
-        System.out.println("\nNo cats available.");
-        return null;
+        return catQueue.poll();
     }
 
     public static void adoptAnimal(Animal animal) {
@@ -68,10 +78,23 @@ public class AnimalShelterService {
     }
 
     public void showAllAnimals() {
-        if (animalQueue.isEmpty())
+        if (this.isEmpty())
             System.out.println("* No animals available for adoption *");
-        for (Animal animal: animalQueue) {
-            System.out.printf("Type: %s\nName: %s\n\n", animal.getType(), animal.getName());
+        else
+            printAnimals();
+    }
+
+    private void printAnimals() {
+        for (Animal animal: catQueue) {
+            System.out.printf("Arrival position: %d\nType: %s\nName: %s\n\n", animal.getTimestamp(), animal.getType(), animal.getName());
         }
+
+        for (Animal animal: dogQueue) {
+            System.out.printf("Arrival position: %d\nType: %s\nName: %s\n\n", animal.getTimestamp(), animal.getType(), animal.getName());
+        }
+    }
+
+    public boolean isEmpty() {
+        return catQueue.isEmpty() && dogQueue.isEmpty();
     }
 }

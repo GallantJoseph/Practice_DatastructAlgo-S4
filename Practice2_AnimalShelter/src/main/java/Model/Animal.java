@@ -1,6 +1,7 @@
 package Model;
 
 public class Animal {
+    private long timestamp;
     private String name;
     private String type;
 
@@ -15,6 +16,14 @@ public class Animal {
     public Animal(String name, String type) {
         this.name = name;
         this.type = type;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getName() {
